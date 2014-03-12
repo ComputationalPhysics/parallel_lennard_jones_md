@@ -1,0 +1,33 @@
+# Physical constants [Length in Å]
+FCC_b = __FCC_b__
+
+# Run parameters
+load_state = __load_state__
+thermostat_enabled = __thermostat_enabled__
+thermostat_frozen_enabled = __thermostat_frozen_enabled__
+timesteps = __timesteps__
+dt = __dt__
+max_number_of_atoms = __max_number_of_atoms__
+max_number_of_cells = __max_number_of_cells__
+
+create_movie = __create_movie__
+movie_every_n_frame = __movie_every_n_frame__
+statistics_interval = __statistics_interval__
+
+# CPU info
+nodes_x = __nodes_x__
+nodes_y = __nodes_y__
+nodes_z = __nodes_z__
+unit_cells_x = __unit_cells_x__
+unit_cells_y = __unit_cells_y__
+unit_cells_z = __unit_cells_z__
+
+# Gravity
+gravity_force = __gravity_force__
+gravity_direction = __gravity_direction__
+
+# Physical properties
+temperature = __temperature__
+thermostat_relaxation_time = __thermostat_relaxation_time__
+r_cut = __r_cut__
+mass = __mass__

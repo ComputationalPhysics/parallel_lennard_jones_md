@@ -1,0 +1,29 @@
+TARGET = LINUX
+# point to the inclue directory
+INCLUDE = program/md
+SOURCEDIR = program/md
+
+INCLUDES = -I$(SOURCEDIR) -I/usr/mpi/gcc/openmpi-1.6.4/include
+# compiler specific flags
+CFLAGS =  -D$(TARGET) -ipo -O3 -std=c++11
+FFLAGS = 
+
+PROJECT = main
+
+_obj = cutil.o md.o mdio.o mdtimer.o random.o settings.o statisticssampler.o system.o thermostat.o unitconverter.o
+
+obj_main     = $(patsubst %,$(SOURCEDIR)/%, $(_obj))
+
+CC      = mpic++
+
+default: $(PROJECT)
+
+$(PROJECT):  $(obj_main)
+	$(CC) $(INCLUDES) -o $(PROJECT) $(obj_main) $(FFLAGS)
+%.o: %.cpp
+	$(CC) -c -o $@ $^ $(INCLUDES) $(CFLAGS)
+
+clean:
+	rm program/md/*.o
+
+all: default
