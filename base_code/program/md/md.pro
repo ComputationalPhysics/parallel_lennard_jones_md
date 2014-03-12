@@ -1,10 +1,7 @@
 TEMPLATE = app
 CONFIG += console
 CONFIG -= qt
-
-release {
-
-}
+TARGET = main
 
 SOURCES += \
     system.cpp \
