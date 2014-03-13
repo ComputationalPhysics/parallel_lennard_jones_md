@@ -7,6 +7,7 @@
 #include <mdtimer.h>
 #include <iomanip>
 #include <atom_types.h>
+#include <string.h>
 
 StatisticsSampler::StatisticsSampler(System *system_) :
     temperature_sampled_at(-1),

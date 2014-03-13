@@ -11,6 +11,7 @@
 #include <random.h>
 #include <statisticssampler.h>
 #include <atom_types.h>
+#include <string.h>
 
 #include <potential_lennard_jones.h>
 

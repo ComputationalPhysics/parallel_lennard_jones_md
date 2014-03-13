@@ -7,10 +7,19 @@ Prerequisites
  - OpenMPI
 
 Usage (see script for details)
- - python run.py
+ - Simply run the run.py Python script:
+ 
+    python run.py
+
+Usage on computer lab
+ - You need to start mpd first:
+
+    mpd &
 
 Usage on Abel 
- - Compile program with make -f make_abel
+ - Compile program with 
+    
+    make -f make_abel
 
 Custom geometries
  - See md_geometry.py and program/create_cylinder/create_cylinder.cpp
