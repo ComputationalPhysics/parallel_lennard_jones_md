@@ -59,7 +59,8 @@ void System::setup(int myid_, Settings *settings_) {
     initialize();
 
     steps = 0;
-    rnd = new Random(-(myid+1));
+    int seed = -(myid+1);
+    rnd = new Random(seed);
 
     init_parameters();
 
@@ -111,37 +112,29 @@ void System::create_FCC() {
     double T = settings->temperature;
 
     bool warning_shown = false;
-    for(int x = 0; x < settings->nodes_x*settings->unit_cells_x; x++) {
-        for(int y = 0; y < settings->nodes_y*settings->unit_cells_y; y++) {
-            for(int z = 0; z < settings->nodes_z*settings->unit_cells_z; z++) {
+    for(int x = 0; x < settings->unit_cells_x; x++) {
+        for(int y = 0; y < settings->unit_cells_y; y++) {
+            for(int z = 0; z < settings->unit_cells_z; z++) {
                 for(int k = 0; k < 4; k++) {
                     // Set positions and type
 
-                    r[0] = (x+xCell[k]) * settings->FCC_b - origo[0];
-                    r[1] = (y+yCell[k]) * settings->FCC_b - origo[1];
-                    r[2] = (z+zCell[k]) * settings->FCC_b - origo[2];
-                    bool is_mine = true;
+                    r[0] = (x+xCell[k]) * settings->FCC_b;
+                    r[1] = (y+yCell[k]) * settings->FCC_b;
+                    r[2] = (z+zCell[k]) * settings->FCC_b;
                     for(i=0;i<3;i++) {
-                        if(!(r[i] >= 0 && r[i] < node_length[i])) is_mine = false;
+                        positions[3*num_atoms_local+i] = r[i];
+                        initial_positions[3*num_atoms_local+i] = r[i];
+                        velocities[3*num_atoms_local+i] = rnd->nextGauss()*sqrt(T*mass_inverse);
                     }
 
-                    if(is_mine) {
-                        // if(n++>10) continue;
-                        for(i=0;i<3;i++) {
-                            positions[3*num_atoms_local+i] = r[i];
-                            initial_positions[3*num_atoms_local+i] = r[i];
-                            velocities[3*num_atoms_local+i] = rnd->nextGauss()*sqrt(T*mass_inverse);
-                        }
+                    atom_type[num_atoms_local] = ARGON;
+                    atom_ids[num_atoms_local] = myid*max_number_of_atoms + num_atoms_local;
 
-                        atom_type[num_atoms_local] = ARGON;
-                        atom_ids[num_atoms_local] = myid*max_number_of_atoms + num_atoms_local;
-
-                        num_atoms_local++;
-                        if(!warning_shown && num_atoms_local >= 0.8*max_number_of_atoms) {
-                            cout << "                 ### WARNING ###" << endl;
-                            cout << "NUMBER OF PARTICLES IS MORE THAN 0.8*MAX_ATOM_NUM" << endl << endl;
-                            warning_shown = true;
-                        }
+                    num_atoms_local++;
+                    if(!warning_shown && num_atoms_local >= 0.8*max_number_of_atoms) {
+                        cout << "                 ### WARNING ###" << endl;
+                        cout << "NUMBER OF PARTICLES IS MORE THAN 0.8*MAX_ATOM_NUM" << endl << endl;
+                        warning_shown = true;
                     }
                 }
             }
