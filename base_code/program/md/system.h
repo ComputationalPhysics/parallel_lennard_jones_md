@@ -16,7 +16,7 @@ using namespace std;
 
 class System {
 private:
-    void initialize();
+    void allocate();
     void move();
     void mpi_move();
     void mpi_copy();
@@ -46,10 +46,10 @@ public:
 
     bool sample_statistics;
     unsigned long steps;
-    unsigned int myid;
-    unsigned int node_index[3];
-    unsigned int num_processors[3];
-    unsigned int neighbor_nodes[6];
+    int myid;
+    int node_index[3];
+    int num_processors[3];
+    int neighbor_nodes[6];
     short my_parity[3];
     double cell_length[3];
     double node_length[3];

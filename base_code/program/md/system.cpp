@@ -21,7 +21,7 @@ System::System()
 
 }
 
-void System::initialize() {
+void System::allocate() {
     positions = new double[3*max_number_of_atoms];
     accelerations = new double[3*max_number_of_atoms];
     velocities = new double[3*max_number_of_atoms];
@@ -56,7 +56,7 @@ void System::setup(int myid_, Settings *settings_) {
     max_number_of_atoms = settings->max_number_of_atoms;
     max_number_of_cells = settings->max_number_of_cells;
 
-    initialize();
+    allocate();
 
     steps = 0;
     int seed = -(myid+1);
