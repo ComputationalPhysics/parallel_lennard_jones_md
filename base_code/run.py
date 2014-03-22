@@ -23,6 +23,9 @@ program.reset()
 program.prepare_new_system()
 program.run()
 
+# Create an .xyz-file to visualize the system in e.g. VMD or Ovito
+program.create_xyz()
+
 print "### Applying thermostat, T="+str(temperature_si)+"K ###"
 program.prepare_thermostat(temperature=temperature, timesteps=2000, run=True, save_state_path="states/01_T_300K")
 

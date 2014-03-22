@@ -10,7 +10,7 @@ import logging
 from datetime import datetime
 
 class MD:
-	def __init__(self, compiler = "icpc", name="md", dt=0.02, logging_enabled=True):
+	def __init__(self, compiler = "mpic++", name="md", dt=0.02, logging_enabled=True):
 		"""
 		Initializes an object with parameters.
 		"""
@@ -21,7 +21,7 @@ class MD:
 		# 	exit()
 
 		self.dt = dt
-		self.FCC_b = 1.54478708 # Correct
+		self.FCC_b = 1.54478708
 		
 		self.do_load_state = True
 		self.thermostat_enabled = False
@@ -197,6 +197,11 @@ class MD:
 		num_nodes = self.nodes_x*self.nodes_y*self.nodes_z
 		self.run_command("%s -O3 program/create_movie/create_movie.cpp -o create_movie" % self.compiler)
 		self.run_command("./create_movie %d %d" % (num_nodes, frames) )
+	
+	def create_xyz(self):
+		num_nodes = self.nodes_x*self.nodes_y*self.nodes_z
+		self.run_command("%s -O3 program/create_xyz/create_xyz.cpp -o create_xyz" % self.compiler)
+		self.run_command("./create_xyz %d" % (num_nodes) )
 
 	def reduce_density(self, relative_density):
 		num_nodes = self.nodes_x*self.nodes_y*self.nodes_z
