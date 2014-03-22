@@ -16,7 +16,20 @@
 #include <potential_lennard_jones.h>
 
 using namespace std;
-System::System()
+System::System() :
+positions(NULL),
+accelerations(NULL),
+velocities(NULL),
+atom_type(NULL),
+atom_moved(NULL),
+mpi_send_buffer(NULL),
+mpi_receive_buffer(NULL),
+atom_ids(NULL),
+linked_list_all_atoms(NULL),
+linked_list_free_atoms(NULL),
+is_ghost_cell(NULL),
+initial_positions(NULL),
+move_queue(NULL)
 {
 
 }
@@ -39,6 +52,19 @@ void System::allocate() {
     for(int i=0; i<6; i++) {
         move_queue[i] = new unsigned int[max_number_of_atoms];
     }
+
+    memset(positions, 0, 3*max_number_of_atoms*sizeof(double));
+    memset(accelerations, 0, 3*max_number_of_atoms*sizeof(double));
+    memset(velocities, 0, 3*max_number_of_atoms*sizeof(double));
+    memset(atom_type, 0, max_number_of_atoms*sizeof(unsigned long));
+    memset(atom_moved, 0, max_number_of_atoms*sizeof(bool));
+    memset(mpi_receive_buffer, 0, max_number_of_atoms*sizeof(double));
+    memset(mpi_send_buffer, 0, max_number_of_atoms*sizeof(double));
+    memset(atom_ids, 0, max_number_of_atoms*sizeof(unsigned long));
+    memset(linked_list_free_atoms, 0, max_number_of_atoms*sizeof(int));
+    memset(linked_list_all_atoms, 0, max_number_of_atoms*sizeof(int));
+    memset(is_ghost_cell, 0, max_number_of_cells*sizeof(bool));
+    memset(initial_positions, 0, 3*max_number_of_atoms*sizeof(double));
 }
 
 void System::setup(int myid_, Settings *settings_) {
@@ -542,7 +568,6 @@ void System::step() {
     mpi_copy();
     reset();
     if(settings->gravity_direction >= 0) apply_gravity();
-
     calculate_accelerations();
     apply_harmonic_oscillator();
     half_kick();
