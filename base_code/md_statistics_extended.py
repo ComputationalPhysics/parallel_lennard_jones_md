@@ -12,7 +12,7 @@ class MDStatisticsExtended(MDStatistics):
 		filename = path+"/statistics/count_periodic.txt"
 		count_periodic = pylab.loadtxt(filename)
 		last_count_periodic = count_periodic[-1]
-		time = self.unit_converter.time_from_si(last_count_periodic[0]*1e-15)
+		time = last_count_periodic[0]
 		count_z = last_count_periodic[3]
 		number_flow_rate = count_z / time
 		return number_flow_rate
@@ -20,14 +20,12 @@ class MDStatisticsExtended(MDStatistics):
 	def calculate_permeability(self, path = "./"):
 		system_length = self.calculate_system_length()
 		area = system_length[0]*system_length[1]
-		volume = self.get_volume(path=path)
-		num_free_atoms = self.get_num_free_atoms(path=path)
 		number_flow_rate = self.get_number_flow_rate(path=path)
 		density = self.get_density(path=path)
-		volume_per_atom = volume / num_free_atoms
+		volume_per_atom = 1.0/density
 		volumetric_flow_rate = number_flow_rate*volume_per_atom
 		diam = 1.0
-		viscosity = 5.0/(16.0*diam**2)*sqrt(self.md.mass*self.md.temperature/pi)
+		viscosity = self.calculate_viscosity(path=path)
 		force = self.get_gravity_force(path=path)
-		permeability = volumetric_flow_rate*viscosity / (area * self.md.mass * density)
+		permeability = volumetric_flow_rate*viscosity / (area * self.md.mass * density * force)
 		return permeability

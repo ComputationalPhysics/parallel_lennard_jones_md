@@ -56,6 +56,16 @@ class MDStatistics():
 		diam = 1.0
 		return 1.0/(sqrt(2)*pi*diam**2*density)
 
+	def calculate_knudsen_correction_factor(self, knudsen_number):
+		def alpha(knudsen_number):
+			alpha0 = 1.358
+			A = 0.17
+			B = 0.4348
+			return alpha0/(1 + A/(knudsen_number**B))
+
+		correction_factor = (1 + alpha(knudsen_number)*knudsen_number)*(1 + 4*knudsen_number/(1 + knudsen_number))
+		return correction_factor
+
 	def get_gravity_force(self, path="./"):
 		import re
 		ini_filename = path+"/md.ini"
@@ -71,8 +81,8 @@ class MDStatistics():
 
 		return force
 
-	def calc_viscosity(self, path="./"):
+	def calculate_viscosity(self, path="./"):
 		from math import sqrt, pi
 		density = self.get_density(path=path)
 		diam = 1.0
-		return 5.0/(16.0*sigma**2)*sqrt(self.md.mass*self.md.temperature/pi)
+		return 5.0/(16.0*diam**2)*sqrt(self.md.mass*self.md.temperature/pi)
