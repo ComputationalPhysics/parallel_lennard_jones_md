@@ -53,7 +53,7 @@ class MDStatistics():
 	def calc_mean_free_path(self, path="./"):
 		from math import sqrt
 		density = self.get_density(path=path)
-		diam = 1.0
+		diam = self.unit_converter.length_from_si(3.62e-10)
 		return 1.0/(sqrt(2)*pi*diam**2*density)
 
 	def calculate_knudsen_correction_factor(self, knudsen_number):
@@ -84,5 +84,5 @@ class MDStatistics():
 	def calculate_viscosity(self, path="./"):
 		from math import sqrt, pi
 		density = self.get_density(path=path)
-		diam = 1.0
+		diam = self.unit_converter.length_from_si(3.62e-10)
 		return 5.0/(16.0*diam**2)*sqrt(self.md.mass*self.md.temperature/pi)

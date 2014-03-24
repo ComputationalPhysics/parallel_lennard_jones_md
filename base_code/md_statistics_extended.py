@@ -24,8 +24,7 @@ class MDStatisticsExtended(MDStatistics):
 		density = self.get_density(path=path)
 		volume_per_atom = 1.0/density
 		volumetric_flow_rate = number_flow_rate*volume_per_atom
-		diam = 1.0
 		viscosity = self.calculate_viscosity(path=path)
-		force = self.get_gravity_force(path=path)
-		permeability = volumetric_flow_rate*viscosity / (area * self.md.mass * density * force)
+		constant_acceleration = self.get_constant_acceleration(path=path)
+		permeability = volumetric_flow_rate*viscosity / (area * self.md.mass * density * constant_acceleration)
 		return permeability

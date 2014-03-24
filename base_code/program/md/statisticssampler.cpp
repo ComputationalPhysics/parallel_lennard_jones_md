@@ -216,7 +216,7 @@ void StatisticsSampler::sample_count_periodic() {
     memset((void*)count_periodic_global,0,3*sizeof(long));
     MPI_Reduce(count_periodic,count_periodic_global,3,MPI_LONG,MPI_SUM,0,MPI_COMM_WORLD);
     if(system->myid==0) {
-        double elapsed_time_this_run = (system->t - system->t0)*system->dt;
+        double elapsed_time_this_run = (system->t - system->t0);
         fprintf(system->mdio->count_periodic_file,"%E %ld %ld %ld\n",elapsed_time_this_run, count_periodic_global[0], count_periodic_global[1], count_periodic_global[2]);
     }
 }
